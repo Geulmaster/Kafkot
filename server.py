@@ -19,7 +19,7 @@ def realtime():
 @application.route('/kafka/')
 def kafkaStream():
     """
-    Get request
+    Get request - new messages
     """
     consumer = KafkaConsumer('hello', group_id='my-group', bootstrap_servers=['192.168.1.48:9092'], auto_offset_reset='earliest', enable_auto_commit=False)
     def events():
