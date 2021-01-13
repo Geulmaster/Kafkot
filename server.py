@@ -1,6 +1,7 @@
 from flask import Response, Flask
 import time
 from kafka import KafkaConsumer
+from Kafkot import config_reader
 
 application = Flask(__name__)
 
@@ -22,7 +23,7 @@ def kafkaStream():
     Get request - new messages
     """
     consumer = KafkaConsumer('hello', group_id='my-group',
-     bootstrap_servers=['192.168.1.48:9092'], enable_auto_commit=False)
+     bootstrap_servers = [config_reader()["brokers"]["servers"]], enable_auto_commit=False)
     def events():
         for message in consumer:
             yield message.value.decode("utf-8") + '\n'
@@ -34,7 +35,7 @@ def all_msgs():
     Get request - old commited messages
     """
     consumer = KafkaConsumer('hello', group_id='my-group',
-     bootstrap_servers=['192.168.1.48:9092'],
+     bootstrap_servers = [config_reader()["brokers"]["servers"]],
       auto_offset_reset='smallest', enable_auto_commit=True,
        auto_commit_interval_ms = 30* 1000)
     def events():
