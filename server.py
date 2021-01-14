@@ -1,4 +1,4 @@
-from flask import Response, Flask
+from flask import Response, Flask, request
 import time
 from kafka import KafkaConsumer
 from Kafkot import config_reader
@@ -41,6 +41,25 @@ def all_msgs():
     def events():
         for message in consumer:
             yield message.value.decode("utf-8") + '\n'
+    return Response(events())
+
+@application.route("/tail", methods=['GET'])
+def tail():
+    """
+    Receives ID and returns it:
+    http://127.0.0.1:5000/tail?num=6 returns last 6 messages
+    """
+    number = request.args.get('num', None)
+    consumer = KafkaConsumer('hello', group_id='my-group',
+     bootstrap_servers = [config_reader()["brokers"]["servers"]],
+      auto_offset_reset='smallest', enable_auto_commit=True,
+       auto_commit_interval_ms = 30* 1000)
+    msgs = []
+    def events():
+        while len(msgs) != number:
+            for message in consumer:
+                msgs.append(message.value.decode("utf-8"))
+        return msgs
     return Response(events())
 
 if __name__ == '__main__':
