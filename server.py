@@ -1,7 +1,7 @@
 from flask import Response, Flask, request
 import time
 from kafka import KafkaConsumer
-from Kafkot import config_reader
+from conf import config_reader
 
 application = Flask(__name__)
 
@@ -63,4 +63,4 @@ def tail():
     return Response(events())
 
 if __name__ == '__main__':
-    application.run(debug = False)
+    application.run(host='0.0.0.0',debug = False)

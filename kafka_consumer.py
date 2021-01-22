@@ -16,5 +16,3 @@ def test():
         
         value = message.value
         export(value.decode("utf-8") + "\n")
-
-test()
