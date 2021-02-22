@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kafkot.fullname" . }}
+  labels:
+    {{- include "kafkot.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: app
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "kafkot.selectorLabels" . | nindent 4 }}
