@@ -6,4 +6,20 @@ create configuration.ini file:
 
 Run helm chart:
 
-`helm install kafkot kafkot/`
+`docker login`
+
+`cd ~/.docker`
+
+`kubectl create secret generic regcred \
+    --from-file=.dockerconfigjson=config.json \
+    --type=kubernetes.io/dockerconfigjson`
+
+In helm_chart/values.yaml make sure that:
+
+`imagePullSecrets:
+  - name: regcred`
+
+Finally:
+
+`helm install kafkot helm_chart/`
+
