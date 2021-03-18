@@ -16,8 +16,7 @@ Run helm chart:
 
 In helm_chart/values.yaml make sure that:
 
-`imagePullSecrets:
-  - name: regcred`
+![Image of imagePullSecrets](https://github.com/Geulmaster/Kafkot/blob/main/config/secrets.png)
 
 Finally:
 
