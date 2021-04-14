@@ -1,6 +1,6 @@
 from kafka import KafkaConsumer
 
-consumer = KafkaConsumer('testo', group_id='my-group', bootstrap_servers=['192.168.1.48:9092'], auto_offset_reset='earliest', enable_auto_commit=False)
+consumer = KafkaConsumer('topic1', group_id='my-group', bootstrap_servers=['192.168.1.48:9092'], auto_offset_reset='earliest', enable_auto_commit=False)
 
 def export(text):
     with open("results.txt", "a+") as results:
@@ -16,3 +16,5 @@ def test():
         
         value = message.value
         export(value.decode("utf-8") + "\n")
+
+test()

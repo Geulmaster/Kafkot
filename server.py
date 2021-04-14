@@ -22,7 +22,7 @@ def kafkaStream():
     """
     Get request - new messages
     """
-    consumer = KafkaConsumer('hello', group_id='my-group',
+    consumer = KafkaConsumer('topic1', group_id='my-group',
      bootstrap_servers = [config_reader()["brokers"]["servers"]], enable_auto_commit=False)
     def events():
         for message in consumer:
@@ -34,7 +34,7 @@ def all_msgs():
     """
     Get request - old commited messages
     """
-    consumer = KafkaConsumer('hello', group_id='my-group',
+    consumer = KafkaConsumer('topic1', group_id='my-group',
      bootstrap_servers = [config_reader()["brokers"]["servers"]],
       auto_offset_reset='smallest', enable_auto_commit=True,
        auto_commit_interval_ms = 30* 1000)
@@ -50,8 +50,7 @@ def tail():
     http://127.0.0.1:5000/tail?num=6 returns last 6 messages
     """
     number = request.args.get('num', None)
-    consumer = KafkaConsumer('hello', group_id='my-group',
-     bootstrap_servers = [config_reader()["brokers"]["servers"]],
+    consumer = KafkaConsumer('topic1', bootstrap_servers = [config_reader()["brokers"]["servers"]],
       auto_offset_reset='smallest', enable_auto_commit=True,
        auto_commit_interval_ms = 30* 1000)
     msgs = []
@@ -63,4 +62,4 @@ def tail():
     return Response(events())
 
 if __name__ == '__main__':
-    application.run(host='0.0.0.0',debug = False)
+    application.run(host='0.0.0.0',debug = True)
